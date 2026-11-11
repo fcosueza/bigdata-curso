@@ -7,7 +7,7 @@
 \title{
 \vspace{10ex}
 \normalfont \normalsize
-\huge \textbf{Introducción a Apache Hadoop}
+\huge \textbf{Prediseño de un Sistema de Big Data}
 }
 \author{Francisco Javier Sueza Rodríguez}
 \date{\normalsize\today}
@@ -32,7 +32,7 @@
     \begin{tabular}{l l}
         \textbf{Centro}: & IES Zaidin-Vergeles \\
         \textbf{Curso}: & Inteligencia Artificial y Big Data\\
-        \textbf{Módulo}: & Big Data Aplicado \\
+        \textbf{Módulo}: & Sistemas de Big Data \\
     \end{tabular}
 \end{center}
 
@@ -52,386 +52,164 @@
 
 \newpage
 
-\section{Creación de la Máquina Virtual}
-Crea en Oracle VirtualBox una máquina virtual con Ubuntu Server 26.04 LTS, 2 procesadores virtuales, 8 GB de RAM, 100 GB de almacenamiento y una configuración de red que permita acceso a Internet y a las interfaces web de Hadoop desde el equipo anfitrión.
-
-\subsection{Solución}
-En este primer ejercicio se va a proceder a instalar \textbf{Ubunut Server 26.04.1} en una máquina virtual de \textbf{VirtualBox}, la cual se ha instalado en el sistema operativo del host, que es una \textbf{Kubuntu 26.04.1}, y se ha creado una imagen usando es especificaciones indicadas.
-
-En primer lugar se ha creado la imagen con el nombre \textbf{practica1-bda}, esto no estaba especificado en la practica por lo que se ha elegido este para dejar claro su propósito. La imagen se ha creado casi de forma automática, solo especificando algunos datos durante el proceso.
-
-Se ha creado el \textbf{usuario hadoop}, tal y como se especificaba en el enunciado, pero la ir a crear le \textbf{hostname} con las indicaciones dadas ha surgido un problema, y es que Linux \textbf{no admite la barra baja} (\_) como carácter para nombrar el hostname, por lo que sea ha sustituido por la barra media. Eso se debe a que según el estándar \cite{rfc01}, no se puede emplear este carácter para el hostname.
-
-En la siguiente captura se puede ver la configuración general generada después de crear la imagen:
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.32]{virtual-config-gen.png}
-	\caption{Configuración General de la Imagen}
-\end{figure}
-	
-Después de realizar la configuración general, se ha elegido el \textbf{número de CPUs} que queremos que tenga la imagen, que este caos han sido 2, y la \textbf{cantidad de RAM} que va a tener la máquina virtual, que va a ser un total de \textbf{8 GB}, tal y como se especifica en el enunciado.
-
-En la siguiente captura, tomada durante el proceso de creación, se puede ver esta información:
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.32]{virtual-config-cpu.png}
-	\caption{Configuración de CPU/RAM de la Imagen}
-\end{figure}
-
-También se ha seleccionado \textbf{100 GB de almacenamiento}, como podemos ver en la primera captura. El resto de la configuración se ha creado de forma automática, durante el proceso de creación de la imagen, como por ejemplo, el adaptador de red que se usa. En la siguiente captura, podemos ver la configuración creada tanto del Almacenamiento como de red:
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.32]{virtual-config-red.png}
-	\caption{Configuración del Alamacenamiento y de Red de la Imagen}
-\end{figure}
-
-Como podemos ver, ha configuración la conexión de red automáticamente con \textbf{NAT}, así como el controlador SATA para el almacenamiento.
-
-Una vez realizada la configuración, se ha \textbf{instalado Ubuntu Server} en la máquina virtual. Una vez realizada la instalación, se ha \textbf{iniciado Ubuntu Server} por primera, como podemos ver a continuación:
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.32]{virtual-config-init.png}
-	\caption{Primer inicio de Ubuntu Server}
-\end{figure}
-
-\section{Configuración del Nombre del Equipo y Preparación del Sistemas}
-Configura el nombre del nodo con el formato \textbf{nodo1\_iniciales\_26\_27}, compruébalo con \textbf{hostname} y \textbf{hostnamectl}, actualiza el sistema, verifica la conectividad e instala Java. Explica por qué Hadoop necesita Java y la función de \textbf{JAVA\_HOME}.
-
-\subsection{Solución}
-Como se comentaba en el punto anterior, \textbf{ni Linux}, \textbf{ni VirtualBox permiten} los nombres de host con \textbf{guiones bajos}, así que se ha optado por reemplazar los guiones bajos por guiones medios, para evitar conflictos. En la siguiente captura, podemos ver la ejecución de los comandos \textbf{hostname} y \textbf{hostnamectl}.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.32]{hostname.png}
-	\caption{Ejecución de los comandos hostname y hostnamectl}
-\end{figure}
-
-A continuación se ha actualizado el sistemas, empleando el comando \textbf{sudo apt-get update} y se ha procedido a instalar Java, mediante los paquetes \textbf{default-jre} y \textbf{default-jdk}, que se han instalado sin problemas. En la siguiente captura, podemos ver la versión instalada de Java:
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.32]{java-install.png}
-	\caption{Versión de Java instalada}
-\end{figure}
-
-El motivo por que Hadoop es porque \textbf{esta desarrollado en Java}, especialmente las librerías principales del proyecto, aunque hay otros lenguajes que se incluyen en otras aplicaciones del ecosistemade Hadoop \cite{ibm01}. Respecto a \textbf{JAVA\_HOME}, es una variable de entorno importante, ya que apunta al \textbf{entorno de ejecución de JAVA}, o \textbf{JRE} (Java Runtime Environment).
-
-\section{Creación del Usuario Hadoop}
-Crea el usuario \textbf{hadoop}, su directorio personal, configura los permisos necesarios y accede con dicho usuario. El prompt debe tener un formato similar a \textbf{hadoop@nodo1\_abs\_26\_27:~\$}.
-
-\subsection{Solución}
-El usuario hadoop \textbf{se ha creado} durante el proceso de \textbf{instalación}, por lo que no ha sido necesario crearlo ahora, aunque hubiera sido sencillo usando el comando \textbf{adduser}, pero no ha sido necesario. En la siguiente captura se puede ver el prompt correcto.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.50]{user.png}
-	\caption{Prompt con el usuario y el hostname}
-\end{figure}
-
-\section{Configuración de SSH}
-Instala y configura SSH para que el usuario \textbf{hadoop} pueda conectarse sin contraseña mediante clave pública. Prueba \textbf{ssh localhost} y \textbf{ssh nodo1\_iniciales\_26\_27}. Explica por qué Hadoop utiliza SSH.
-
-\subsection{Solución}
-En este ejercicio vamos a configurar SSH. \textbf{Hadoop} necesita ssh ya que este permite la conexión, de forma segura, a todos los nodos de la red distribuida. De esta forma el framework puede realizar operaciones en dichos nodos de forma segura, y aunque nosotros solo vamos a tener un nodo real, vamos a simular una red distribuida, así que necesitamos instalarlo.
-
-No se ha instalado ssh ya que esto se ha realizado durante la instalación. En primer lugar se \textbf{han generado las claves} usando el comando \textbf{ssh-keygen}, para posteriormente introducir la clave en el fichero \textbf{autorized\_keys} y cambiar los permisos para que todo funcione correctamente. A continuación se muestran las capturas con la configuración inicial.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.50]{ssh-gen.png}
-	\caption{Generación de las claves de ssh}
-\end{figure}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.50]{ssh-file.png}
-	\caption{Contenido del fichero autorized\_keys}
-\end{figure}
-
-Una vez configurado todo, se ha comprobado que funciona correctamente realizando la conexión al sistema empleando los 2 hosts especificados en el enunciado.
-
-
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.46]{ssh-localhost.png}
-	\caption{Conexión mediante ssh a localhost}
-\end{figure}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.46]{ssh-host.png}
-	\caption{Conexión empleando el host nodo1-fjsr-26-27}
-\end{figure}
-
-\section{Instalación de Apache Hadoop}
-Descarga e instala Apache Hadoop en \textbf{/opt/hadoop}. Configura \textbf{JAVA\_HOME}, \textbf{HADOOP\_HOME}, \textbf{HADOOP\_CONF\_DIR} y \textbf{PATH}. Comprueba la instalación con \textbf{hadoop version}.
-
-\subsection{Solución}
-En este ejercicio vamos a \textbf{instalar Hadoop} y a configurar las variables de entorno para su correcto funcionamiento. Para realizar la instalación, se ha elegido la \textbf{distribución binaria} que podemos encontrar en la \href{https://hadoop.apache.org/releases.html}{página de descargar de Hadoop}, mediante \textbf{wget}, ya que no tenemos interfaz gráfica, y se ha extraído en \textbf{/opt}. En la siguiente captura podemos ver el directorio de instalación de Hadoop.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.46]{hadoop-dir.png}
-	\caption{Directorio de instalación de Hadoop}
-\end{figure}
-
-A continuación se han establecido todas las variables de entorno para que Hadoop pueda funcionar correctamente, lo que se ha hecho incluyéndolas en el fichero \textbf{.bashrc} del directorio home del usuario.  Por último, se ha comprobado que la versión de Hadoop es la correcta, como podemos ver en las siguientes capturas.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.46]{hadoop-env.png}
-	\caption{Valores de las variables de entorno}
-\end{figure}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.46]{hadoop-ver.png}
-	\caption{Versión de Hadoop instalada}
-\end{figure}
-
-\section{Configuración Pseudo-distribuida}
-Configura \textbf{core-site.xml}, \textbf{hdfs-site.xml}, \textbf{mapred-site.xml} y b para trabajar en modo pseudo-distribuido. Explica la función de cada fichero y justifica \textbf{dfs.replication = 1}.
-
-\subsection{Solución}
-En este ejercicio vamos a \textbf{configurar hadoop} para porder trabajar en modo pseudo-distribuido. Para ello vamos a modificar una serie de archivos que nos permitirán trabajar de este modo. Los ficheros y sus configuraciones son los siguientes: 
+\section{Caso Práctico}
+\textbf{Logística Nova XXI} es una empresa de transporte y distribución que quiere explorar soluciones Big Data para modernizar su gestión. Sus características y necesidades son las siguientes:
 
 \begin{itemize}
-	\item \textbf{core-site.xml}: contiene la configuración general de Hadoop y los parámetros comunes a todos sus componentes. En la siguiente captura podemos ver sus parámetros:
+	\item Hay distintas fuentes:
+	\begin{itemize}
+		\item Externas a la empresa: datos abiertos de tráfico, climatología y precios de carburantes, actualizados varias veces por semana
+		\item Internas a la empresa: telemetría en tiempo real de la flota de camiones (GPS, consumo, sensores de mantenimiento) y transacciones de envíos de clientes.
+	\end{itemize}
 	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[scale=0.58]{config-core.png}
-		\caption{Configuración core-site.xml}
-	\end{figure}
-	
-	\item \textbf{hdfs-site.xml}: contiene la configuración del sistema de ficheros HDFS. 
-	
-	En este archivo es donde hemos configurado la opción \textbf{dfs.replication} con valor 1. Esto se ha realizado así ya que esta configuración se utiliza para indicar a Hadoop \textbf{cuantas replicas} debe tener de cada bloque de datos. Por norma genera, cuando tenemos varios nodos suele haber varias replicas, por si falla alguna, pero como aquí solo tenemos un nodo solo podremos tener 1 replica de cada bloque de datos.
-	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[scale=0.60]{config-hdfs.png}
-		\caption{Configuración hdfs-site.xml}
-	\end{figure}
-	
-	\item \textbf{mapred-site.xml}: este archivo permite configurar el MapReduce, que permite dividir los trabajos en tareas y ejecutarlas de forma distribuida. Los valores que hemos configurado se pueden ver en la siguiente captura:
-	
-	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[scale=0.48]{config-map.png}
-		\caption{Configuración mapred-site.xml}
-	\end{figure}
-	
-	\item \textbf{yarn-site.xml}: contiene la configuración de YARN, el sistema encargado de gestionar los recursos del la red de nodos y coordinar la ejecución de las aplicaciones. 	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[scale=0.44]{config-yarn.png}
-		\caption{Configuración yarn-site.xml}
-	\end{figure}
+	\item La cantidad de datos actualmente es de aproximadamente 50 TB de datos históricos, con previsión de +15 TB/mes por incorporación de nuevos sensores.
+	\item Requisitos de negocio:
+	\begin{itemize}
+		\item Los clientes deben poder consultar en línea el estado de sus envíos (transacciones diarias).
+		\item El departamento de operaciones quiere alertas en tiempo real para incidencias (retrasos, averías, desvíos de ruta).
+		\item La dirección general necesita un informe semanal con métricas descriptivas (costes de combustible, puntualidad, utilización de la flota) con datos cerrados el domingo.
+		\item El área de planificación quiere un modelo predictivo que anticipe retrasos probables en rutas según datos históricos de tráfico y clima.
+	\end{itemize}
 \end{itemize}
 
-\section{Formateo y Puesta en marcha de HDFS y YARN}
-Formatea el NameNode, inicia HDFS y YARN y comprueba los procesos mediante jps. Deben aparecer, según la configuración, \textbf{NameNode}, \textbf{DataNode}, \textbf{SecondaryNameNode}, \textbf{ResourceManager} y \textbf{NodeManager}. 
+\section{Proyecto de Big Data}
+En este apartado vamos a explicar el proyecto de Big Data que se ha diseñado para solucionar el problema que se ha planteado. Se responderán a todas las cuestiones que se plantean en el enunciado y se expondrá el diseño realizado.
 
-\subsection{Solución}
-En es ejercicio vamos a formatear el namenode, para poder iniciar HDFS y así mismo vamos a iniciar también YARN, comprobado que no esta funcionando correctamente, como podemos ver en las siguientes capturas.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.40]{init-format.png}
-	\caption{Formateo del namenode}
-\end{figure}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.52]{init-jps.png}
-	\caption{Procesos mostrados con jps}
-\end{figure}
-
-\section{Interfaces web de Hadoop}
-Accede a la interfaz del NameNode en \textbf{http://IP\_DEL\_NODO:9870} y a YARN ResourceManager en \textbf{http://IP\_DEL\_NODO:8088}. Explica brevemente qué información ofrece cada interfaz.
-
-\subsection{Solución}
-En este ejercicio nos hemos conectado a las dos interfaces web que proporciona, tanto \textbf{NameNode} como \textbf{YARN}. Ya que en la máquina virtual tenemos instalada \textbf{Ubuntu Server}, que no viene con entorno gráfico por defecto, se ha realizar la conexión desde el sistema host, configurando los puertos desde la máquina virtual. Las 2 interfaces ofrecen información diferente y permiten realizar cosa diferentes, como vemos a continuación:
+\subsection{Identificación de las 5V} 
+En este primer ejercicio vamos a identificar las 5Vs en el caso propuesto, justificando la necesidad de emplear un sistema de Big Data como solución.
 
 \begin{itemize}
-	\item \textbf{Interfaz de NameNode}: esta interfaz nos permite acceder a información y gestionar el sistema de archivos HDFS, viendo el estado general, el número de nodos, se ha habido errores, consultar los logs, ...etc. En la siguiente captura podemos ver la interfaz.
+	\item \textbf{Volumen}
 	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[scale=0.35]{web-node.png}
-		\caption{Interfaz web de NameNode}
-	\end{figure}
+	 En nuestro caso el volumen de datos que se especifica en el caso práctico es muy grande, no solo hablamos de más de \textbf{15 TB de datos mensuales}, teniendo en cuenta además que en la mayoría de los casos los registros van ser registros que se pueden representar en texto, es muchísima información. Pero es que además debemos tener en cuenta los \textbf{50 TB acumulados de datos históricos}, que es una cantidad enorme de datos. Si se mantiene la previsión de generación de datos, en un año se habrán incorporado más de 180 TB de información.
+	 
+	 Esto justifica la implementación de un sistema Big Data, ya que el volumen que ya existe de datos y el que se generará es muy grande.
 	
-	\item \textbf{Interfaz de YARN}: por otro lado, la interfaz de YARN nos permite gestionar los recursos de la red de nodos y de las aplicaciones que se ejecutan en ellas, visualizando estadísticas, aplicaciones, planificación, ...etc. La interfaz es la siguiente:
+	\item \textbf{Velocidad}
 	
-	\begin{figure}[ht]
-		\centering
-		\includegraphics[scale=0.35]{web-yarn.png}
-		\caption{Interfaz web de YARN}
-	\end{figure}
+	La velocidad es crucial en algunos de los aspecto de nuestro caso, la \textbf{telemetría de los camiones}, los \textbf{datos de tráfico} o la \textbf{climatología} son datos que deben procesarse rápidamente, algunos en tiempo real, para tomar decisiones sobre las rutas que se deben tomar o comprobar el estado de los camiones. Además, los clientes deben consultar el \textbf{estado de la entrega} en tiempo real, por lo que los datos de \textbf{posicionamiento} deben igualmente gestionarse en \textbf{tiempo real}.
+	
+	Esta velocidad de procesamiento, y de esa cantidad de datos, solo se puede lograr implementado un sistema de procesamiento distribuido.
+	
+	\item \textbf{Variedad}
+	
+	En este caso, tenemos una \textbf{gran variedad de fuentes} y de \textbf{formatos}. Tenemos datos \textbf{estructurados} como pueden ser la información de los clientes o el registro de operaciones o datos en formato \textbf{JSON} procedente de sensores, dispositivos de GPS, así como datos de externos que pueden venir en diferentes formatos, como la \textbf{información de tráfico} o \textbf{meteorológica}, \textbf{precios de carburantes},... entre otros. 
+	
+	En resumen, tenemos una gran variedad de fuentes de datos que pueden venir en diferentes formatos, y que necesitan ser adaptados e integrados conjuntamente para representar la situación con coherencia.
+	
+	\item \textbf{Veracidad}
+	
+	En el caso que estamos tratando la veracidad la información es importante. Hay que tener en cuenta que muchos de los datos que podemos recolectar pueden tener errores, ya sea por \textbf{sensores defectuosos}, \textbf{mediciones incorrectas} del consumo de combustible o de estado mecánico de la flota. Además, los datos externos,como los del tráfico o la meteorología pueden tener \textbf{diferentes niveles de precisión}. 
+	
+	Teniendo en cuenta que estos datos se van emplear para alimentar el modelo predictivo, es importante implementar mecanismos de calidad que se encarguen de verificar la corrección de los datos y de limpiarlos o adaptarlos, en caso de que sea necesario.
+	
+	\item \textbf{Valor}
+	
+	Por último hablamos del valor, y en nuestro caso, el valor que nos proporcionan estos datos es una \textbf{mejora generalizada} del funcionamiento de la empresa. Nos permiten tomar decisiones logísticas más eficientes, mejorando la planificación de rutas. Nos permitirán también poder ofrecer servicios al cliente de gran valor, como el seguimiento en tiempo real de sus paquetes. Además, permitirán la reducción de coste al tener un mejor planificación y ayuda en la toma de decisiones estratégicas de negocio.
 \end{itemize}
 
-\section{Sistemas de almacenamiento Big Data}
-Redacta una explicación de 300-500 palabras sobre HDFS, NameNode, DataNode, bloques, replicación, diferencias con un sistema de ficheros tradicional, escalabilidad y ventajas de aumentar el número de nodos. Relaciónalo con la instalación realizada.
+\subsection{Propuesta de Arquitectura Big Data}
+En este apartado se va a realizar el diseño del sistema de Big Data que cubra las necesidades mencionadas en caso práctico, que podemos ver de forma resumida en la captura que se muestra a continuación. 
 
-\subsection{Solución}
-\textbf{HDFS} (Hadoop Distributed File System) es el sistema de archivos que usa Apache Hadoop, un sistema de archivos distribuido diseñado para almacenar grandes cantidades de información repartidas entre diferentes equipos o nodos. Su objetivo principal es ofrecer un sistema escalable y eficiente, a la par que tolerante a fallos, capaz de trabajar con grandes cantidades de datos de forma eficiente.
+Como nota, \textbf{no se ha incluido} el modelo de \textbf{Machine Learning} en el diagrama, por falta de espacio, aunque se realizará su explicación en la actividad relacionado. Tampoco se ha incluido la \textbf{capa de gobierno}, ya que esta es una capa transversal que afecta a todas, pero si se va a explicar su funcionamiento en este ejercicio.
 
-Este sistema de archivos se basa principalmente en dos componentes: \textbf{NameNode} y \textbf{DataNode}. El \textbf{NameNode} es el encargado de gestionar la \textbf{metainformación} de los archivos, es decir, información sobre donde se ubican los archivos, que permisos tienen, los directorios, etc. Mientas que por otro lado, \textbf{DataNode} se encarga de almacenar la información que contienen los archivos propiamente dicha, así como de gestionar la operaciones de lectura y escritura.
-
-La unidad en la que se almacenan los archivos en los DataNodes son los \textbf{bloques}. Un archivo se divide en diferentes bloques que pueden ser almacenados en diferentes nodos, incluso el mismo bloque en varios nodos, utilizando lo se que conoce como \textbf{replicación}, una técnica que usa Hadoop para que un mismo bloque se almacene en diferentes nodos, de esta forma, se consigue un sistema, muy tolerante a fallos, ya que si un nodo deja de estar disponible, por ejemplo, se podrá recuperar desde otro nodo esa misma información. 
-
-Esta arquitectura favorece la \textbf{escalabilidad horizontal} del sistema, ya que simplemente añadiendo más nodos podemos expandirlo, permitiendo que la cantidad de datos que se pueden almacenar en el sistema aumente, en este aspecto, \textbf{aumentar el número de nodos} beneficia la distribución de carga en el sistema, así como la tolerancia a fallos, ya que podemos tener los bloques copiados en más nodos, además de facilitar el crecimiento de la estructura en general. 
-
-Esto, es \textbf{muy diferente} a un \textbf{sistemas de archivos tradicional}, ya que estos sistemas almacenan toda la información en un mismo ordenar, mientras que HDFS lo hace un multitud de nodos o equipos.
-
-En \textbf{nuestra instalación} no disponemos de varios equipos, por eso hemos realizado una configuración \textbf{pseudo-distribuida}, que aunque todo se ejecuta en una misma máquina, se mantienen los procesos separados, simulando su ejecución en diferentes nodos. Además, hemos indicado la opción \textbf{dfs.replication = 1}, ya que solo disponemos de una DataNode, y no tiene dinciar que se mantengan copias de los bloques en otros nodos.
-
-\section{Creación de la Estructura HDFS}
-Crea en HDFS \textbf{/datos}, \textbf{/datos/entrada}, \textbf{/datos/csv}, \textbf{/datos/json} y \textbf{/resultados}. Comprueba la estructura con \textbf{hdfs dfs -ls /} y \textbf{hdfs dfs -ls /datos}.
-
-\subsection{Solución}
-En este ejercicio se han creado los directorios pedidos empleando el comando \textbf{hdfs dfs -mkdir}. Este comando no creo directorios en el sistema de archivos del SO, sino dentro de HDFS. En la siguiente captura se puede ver la estructura de archivos creados.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.65]{estruct.png}
-	\caption{Estructura de archivos en HDFS}
-\end{figure}
-
-\section{Preparación del conjunto de datos}
-Utiliza el fichero \textbf{ventas.csv} suministrado, que contiene 100 registros más una cabecera. Identifica sus campos y comprueba el número de líneas mediante \textbf{wc -l ventas.csv}.
-
-\subsection{Solución}
-En primer lugar se ha comprobado que el fichero tiene las líneas que debe tener, como podemos ver en la siguiente captura.
-
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.65]{ventas-lineas.png}
-	\caption{Conteo de líneas del archivo ventas.csv}
-\end{figure}
-
-Además, ha abierto el fichero \textbf{ventas.csv}, viendo que los campos que tiene son: \textbf{id}, \textbf{fecha}, \textbf{provincia}, \textbf{categoría}, \textbf{producto}, \textbf{cantidad} y \textbf{precio}, como podemos ver.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.70]{ventas.png}
-	\caption{Archivo ventas.csv}
-\end{figure}
-
-\section{Ingestión de los Datos}
-Realiza la ingestión del fichero local en HDFS usando y explicando comandos como \textbf{hdfs dfs -put}, \textbf{hdfs dfs -copyFromLocal},\textbf{ hdfs dfs -ls} y \textbf{hdfs dfs -cat}. Explica la diferencia entre \textbf{put} y \textbf{copyFromLocal}.
-
-\subsection{Solución}
-En este ejercicio hemos realizado la \textbf{ingestión de los datos}. Esto consiste en pasar los datos, en nuestro caso por lotes, al sistema de archivos HDFS. En primer lugar, hemos copiado los archivos a la máquina virtual, empleando ssh. Se han copiado tanto los archivos ventas.csv como ventas.json, así ya lo tenemos para el próximo ejercicio. En la siguiente captura, se muestran los 2 archivos en el directorio home del usuario hadoop.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.50]{ingesta-local.png}
-	\caption{Archivos locales de datos}
-\end{figure}
-
-Una vez copiados los archivos, hemos usado el comando \textbf{hdfs dfs -put} para copiarlos al sistema HDFS. Tanto este comando como \textbf{hdfs dfs -copyFromLocal} son muy parecidos, la diferencia es que mientras que \textbf{copyFromLocal} esta restringido a archivos locales, mientras que \textbf{put} puede realizar la copia desde otras fuentes, pero en la práctica, son iguales. 
-
-Para comprobar si el archivo estaba en el sistema de ficheros HDFS, hemos usado el comando \textbf{hdfs dfs -ls}. Es comando es \textbf{similar a ls de Unix/Linux}, es un comando que se limita a listar los elementos que hay en un directorio. De igual manera, para ver el contenido del fichero se ha usado \textbf{hdfs dfs -cat}, este comando, al igual que el \textbf{comanto cat de Linux}, concatena un fichero o un stream a la salida estándar, lo que en la práctica muestra el contenido de un fichero de texto o los bytes de un fichero binario. En la siguiente captura podemos ver la salida de estos dos comando. 
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.60]{ingesta-ls.png}
-	\caption{Uso de cat y ls en HDFS}
-\end{figure}
-
-La \textbf{salida de cat se a limitado a 10 líneas}, para que se puedan ver los dos comandos en la captura pero demostrando su funcionamiento.
-
-\section{Análisis de formatos de Almacenamiento}
-Trabaja con \textbf{ventas.csv} y su equivalente \textbf{ventas.json}. Compara estructura, tamaño, legibilidad, tipado, datos anidados, facilidad de procesamiento y casos de uso. Comprueba tamaños con \textbf{ls -lh} y \textbf{hdfs dfs -du -h /datos}. Justifica qué formato elegirías para este caso.
-
-\subsection{Solución}
-En ese ejercicio se va a realizar una comparación entre los dos formatos en los que nos encontramos los datos en nuestra tarea, a saber, \textbf{CSV} y \textbf{JSON}. 
-
-En primer lugar habría que hablar de \textbf{CSV} (Comma Separated Values), un formato antiguo y muy simple que consta simplemente de un \textbf{conjunto de valores}, agrupados por filas (o no), \textbf{separados por una coma}. Se puede incluir una cabecera si se quiere especificar que representa cada valor. Tiene la ventaja de que es \textbf{muy simple }y ocupa \textbf{poco espacio}. En la siguiente captura podemos ver el contenido de nuestro archivo como ejemplo.
+A continuación de la captura se va a explicar cada capa y lo elementos que la van a componer.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.60]{formatos-csv.png}
-	\caption{Contenido del fichero en formato CSV}
+	\includegraphics[scale=0.60]{arquitectura-bigdata.png}
+	\caption{Arquitectura del sistema de Big Data}
 \end{figure}
 
-Por otro lado tenemos a \textbf{JSON} (JavaScript Object Notation), un formato que surge del lenguaje de programación Javascript, ampliamente usado, y que se compone de pares \textbf{clave/valor}, de una forma estructura. Este formato, se estructura en \textbf{objetos}, que se pueden anidar los objetos, además de incluir arrays de valores. Aunque es un formato que ocupa más espacio, es más \textbf{fácil de leer para los humanos} y de procesar, ya que cada valor tiene asociado una clave. En la siguiente captura podemos ver un ejemplo con nuestro archivo ventos.json.
+\begin{itemize}
+	\item \textbf{Capa de Ingesta} 
+	
+	En esta capa debemos de tener un software que sea capaz de gestionar los diferentes eventos y mensajes en los que vamos a obtener la información de las diferentes fuentes. Por eso un \textbf{gestor de eventos o mensajes} como puede ser Kafko o RabbitMQ no ayudará a obtener la información y almacenarla en el sistema de almacenamiento adecuado, que veremos a continuación. Esta capa es \textbf{necesaria} para poder distribuir los datos en los sistemas de almacenamiento indicado.
+	
+	\item \textbf{Capa de Almacenamiento}        
+	
+	En esta capa tendremos dos almacenamientos diferentes. Por un lado tendremos un \textbf{data lake}, que se encargará de ir almacenando los \textbf{datos históricos} en un sistema de almacenamiento distribuido, como puede ser HDFS, que nos permitiría almacenar grandes cantidades de datos, además de la posibilidad de escalar de forma horizontal. Además, tendremos una \textbf{base de datos relacional} para almacenar la información de los envíos, permitiendo además la realización de consultar rápidas por parte de los usuarios en la página web. Esta capa es \textbf{necesaria} para poder almacenar la información antes de su procesamiento.
+	
+	\item \textbf{Capa de Procesamiento}   
+	
+	En esta capa tenemos que procesar la información de diferentes formas. Por un lado, \textbf{los datos históricos} se \textbf{procesarán por lotes}, ya que son grandes cantidades de datos y cuyo resultado no necesita ser tan inmediato. Además, se necesitará \textbf{procesamiento en streaming} para los datos de los pedidos, así como la telemetría de los vehículos y la consultas de los usuarios. También se necesitará realizar la limpieza de los datos, \textbf{mediante procedimientos ETL}.  Podemos usar varias herramientas aunque algunas, como Spache Sparks nos permitirá realizar todo esto. Esta capa es fundamenta para el análisis de los datos y la extracción de valor.
+	
+	\item \textbf{Data Warehouse}
+	
+	Este capa, que podría haberse incluido en la de análisis pero se ha decidido poner por separado, se \textbf{encargará de almacenar y preparar} los \textbf{datos históricos} para su análisis. Si no se ha dado en la capa anterior, en esta también se puede implementar el proceso ETL aunque, como hemos comentado, solo afectará a los datos históricos.
+	
+	\item \textbf{Capa de Análisis}
+	
+	En esta capa tenemos que distinguir entre componentes diferentes dependiendo de que parte de los datos se encarguen de procesar y gestionar:
+	
+	\begin{itemize}
+		\item \textbf{Inteligencia de Negocio e Informes}: en este apartado estarán las aplicaciones que se encargarán de gestionar los datos de warehouse y realizar análisis de los datos históricos, generando informes que ayuden a la toma de decisiones o a las predicciones.
+		
+		\item \textbf{Sistemas de Alertas e Información en Tiempo Real}: en este caso los datos se analizarán y usarán directamente desde la capa de procesamiento, donde se emplearán en un sistemas de alertas, para llevar registro de la situación de los envíos y los vehículos, y una interfaz web (o app movil) que será donde los usuarios podrán interactuar con la información de sus pedidos.
+	\end{itemize}
+	
+	\item \textbf{Capa de Gobierno y Seguridad}
+	
+	Esta capa, que no aparece en el esquema, afecta a todas las capas, ya que se debe encargar de que los datos tiene la calidad suficiente, de los procesos de autenticación y autorización para evitar accesos no permitidos a los datos, de la auditoría y trazabilidad de los datos, documentación del sistema, ...etc. Hay una gran variedad de herramientas y políticas que se deben implementar para cubrir los diferentes aspectos de los que se encarga esta capa. 
+\end{itemize}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.60]{formatos-json.png}
-	\caption{Contenido del fichero en formato JSON}
-\end{figure}
+\subsection{Justificación de Decisiones Clave}
 
-Como podemos ver, cada uno de los \textbf{formatos }tiene su \textbf{ventajas}, cuando la cantidad de datos no es muy grande y no pude haber variaciones, o cuando el espacio de almacenamiento es crítico, \textbf{CSV} puede ser una buena opción, aunque como podemos comprobar, esta mucho más limitado, el espacio que ocupa la misma información es 1/3 de lo que ocupa esa misma información en formato json, como podemos ver en la siguiente captura, donde se muestra el tamaño de los directorios donde se encuentra los respectivos archivos.
+En esta sección se van a explicar el porque se han tomado ciertas decisiones sobre la arquitectura de la aplicación en lo referente a los siguientes conceptos:
 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.60]{formatos-size.png}
-	\caption{Tamaño de los archivos CSV y JSON en local y dentro de HDFS}
-\end{figure}
-
-Personalmente, y \textbf{dado el volumen} de datos y que estos son \textbf{relativamente simples}, escogería \textbf{CSV} como formato, a pesar de que soy un firme defensor de JSON, pero creo que sería más adecuado para nuestro propósito.
-
-\section{Comprobación de almacenamiento físico en HDFS}
-Desde la interfaz web del NameNode localiza \textbf{ventas.csv} e identifica tamaño, número de bloques, identificador de bloque, DataNode y factor de replicación. Relaciona los valores con \textbf{hdfs-site.xml}.
-
-\subsection{Solución}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.40]{fisico.png}
-	\caption{Información del fichero ventas.csv en la interfaz web de NameNode}
-\end{figure}
-
-En este ejercicios vamos a comprobar el espacio físico que ocupa nuestro fichero ventas.csv en el sistema de archivos HDFS. Para comprobarlo, podemos consultar la \textbf{interfaz web de NameNode}, y utilizando los utilidad \textbf{Browse the file system} buscar el archivo y ver su información.
-
-Como podemos ver en la captura que la interfaz nos da información de los \textbf{permisos}, \textbf{propietario}, \textbf{ultima modificación}, \textbf{replicación}, \textbf{tamaño de bloque} y el \textbf{nombre}. El \textbf{tamaño} del archivo es de \textbf{4.87KB}, es no ocupa ni un 1\% de un bloque, que como podemos ver tienen un tamaño de 128MB. Pulsando en el fichero, podemos ver el resto de datos que se nos piden, como podemos ver en la siguiente captura.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.50]{fisico-2.png}
-	\caption{Detalle el fichero ventas.csv en la interfaz web de NameNode}
-\end{figure}
-
-En esta ventana, podemos ver el nombre del nodo, \textbf{nodo1-fjsr-26-27}, así como su ID, su tamaño, ..etc. Como podemos ver, el \textbf{factor de replicación}, que aparece en la primera captura, esta \textbf{establecido en 1}, que exactamente el valor que hemos configurado en el fichero \textbf{hdfs-site.xml}.
-
-\section{Procesamiento de los datos}
-Obtén: (1) total de registros, (2) operaciones por provincia, (3) importe total por provincia usando \textbf{cantidad * precio}, (4) operaciones por categoría y (5) provincia con mayor volumen económico.
-
-\subsection{Solución}
-Para este ejercicio, debemos obtener diferentes datos de nuestro archivo. Dado que aún no he visto nada de Python, y ciertamente yo no he programado nunca, se va a usar, como se ha sugerido en el foro \textbf{AWK}, un comando con el si estoy más familiarizado, ya que soy usuarios de Linux desde hace muchos años, y para mostrar los datos y realizar todo de forma más "elegante", se va integrar en un script de Bash. 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.38]{procesamiento-script.png}
-	\caption{Script de bash para procesar los datos}
-\end{figure}
+\begin{itemize}
+	\item \textbf{Escalabilidad}: en nuestro caso se optará por una \textbf{escalabilidad horizontal}, añadiendo nuevos nodos al clúster cuando sea necesario ya que el volumen de datos a procesar va a ir aumentado de forma muy rápida. Respecto al procesamiento, los datos en tiempo real o streaming requieren de un procesamiento muy rápido, por lo que podemos ir ampliando la red de nodos en caso de que estemos cortos de potencia de cómputo.
+	
+	\item \textbf{ACID vs BASE}: en nuestro caso las propiedades \textbf{ACID} se aplicarían a las \textbf{operaciones transaccionales}, es importante que datos sobre incidencias de envíos, estado de la entrega, o la información relacionada con la facturación se asegure de que las transacciones se completan correctamente y donde la integridad de los datos es fundamental. Por otro lado, se podrían aplicar las propiedades \textbf{BASE} por un lado a datos de telemetría, donde prima su disponibilidad aunque puedan tener un margen de error, así como a los datos de meteorología. Además, se aplicarían a los datos históricos de la aplicación, que estarían almacenados en el data warehouse. 
+	
+	\item \textbf{OLAP vs OLTP}: al igual que en el caso anterior, incorporaríamos ambos sistemas, ya que cubren aspectos diferentes. Por un lado el sistema \textbf{OLTP} (OnLine Transaction Processing) es necesario para las operaciones transaccionales, las que se van a producir a diario en la empresa especialmente relacionadas con los envíos, gestión de incidencias, estado de la entrega, ...etc, usando para ellos las bases de datos relacionales de la capa de almacenamiento. Por otro lado, el sistema \textbf{OLAP} (OnLine Analytical Processing) que emplearemos sobre todo para realizar las consultas y el análisis sobre los históricos de los datos, aprovechado las capacidades de data warehouse.
+	
+	\item \textbf{Data Warehouse}: aunque ya lo hemos comentado en los puntos anteriores, \textbf{si sería conveniente} incorporar un Data Warehouse, especialmente para la parte que corresponde a los datos históricos y su procesamiento, ya que facilitaría las consultas analíticas y sería parte clave del sistema OLAP.
+\end{itemize} 
 
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.38]{procesamiento-resultado.png}
-	\caption{Resultado del procesamiento de los datos.}
-\end{figure}
+\subsection{Estrategias de Procesamiento}
 
-Como podemos ver el script es bastante simple, simplemente \textbf{ejecutamos una acción} cada vez que estamos en una \textbf{línea por debajo de la cabecera} (NR > 1), que suele consistir en crear un array cuyos índices sean los elementos que queremos contar y los valores el valor en sí mismo. Después de acabar (bloque END), procesamos el array el mostramos y los resultados.
- 
-\newpage
+En nuestro sistemas se van usar principalmente 2 estrategias de procesamiento que responden a necesidades diferentes:
 
-\bibliography{citas}
-\bibliographystyle{unsrt}
+\begin{itemize}
+	\item \textbf{Procesamiento por Lotes}: es tipo de procesamiento se empleará, principalmente, con los datos que se almacena en el Data Warehouse, ya que tenemos cantidades grandes de datos donde la respuesta no necesita ser tan "inmediata" como  con otros datos de nuestro sistema. Los datos con este tipo de procesamiento se emplearán para realizar análisis de inteligencia de negocios, así como para el entrenamiento del modelo predictivo, aunque de esto hablaremos más adelante. En definitiva, se usarán con los datos históricos.
+	
+	\item \textbf{Procesamiento en Streaming}: ese procesamiento se empleará en los datos que van llegando de los sensores, los datos de los pedidos, incidencias, alertas, ...etc, en resumen, en todos eventos que generan un flujo de datos continuo y que tiene que se procesados de forma rápida, ya sea para actualizar es estado de un pedido o para pedir asistencia en carretera para un vehículo de la flota, o para gestionar una incidencia en una entrega, por ejemplo.
+\end{itemize}
+
+\subsection{Equilibrio CAP y SCV}
+En esta sección vamos a explicar la aplicación de los teoremas CAP y SCV en nuestro sistema de Big Data, y donde aplicaríamos según que principios.
+
+\begin{itemize}
+	\item \textbf{Teorema CAP}: como en todos los sistemas distribuidos, n\textbf{o se puede garantizar 100\%} que no vaya a haber \textbf{particionamiento de la red}, por lo que nos quedaría explicar donde sería mas interesante priorizar la consistencia o la disponibilidad:
+	\begin{itemize}
+		\item \textbf{Consistencia}: se debería priorizar tanto en las operaciones transaccionales, ya que estas operaciones deben ser consistente y reflejar el estado real de los pedidos, entregas, ..etc, como en los datos históricos del data warehouse, ya que no tenemos especial prisa en procesar estos datos, pero una vez que se procesan deberán ser lo más consistente posibles, para poder generar informes fiables.
+		
+		\item \textbf{Disponibilidad}: por otro lado, los datos relacionados con la telemetría de los vehículos, así como los datos meteorológicos o de tráfico, ya que nos interesa tener los datos siempre disponibles aunque algunos tengan temporalmente información desactualizada.
+	\end{itemize} 
+	
+	\item \textbf{Teorema SCV}: la aplicación de este teorema es análoga al anterior, que queremos las misma características en los mismos elementos. En este caso, dado nuestro caso, siempre se va a priorizar la \textbf{escalabilidad}, para poder hacer frente al incremento de datos, y su correspondiente almacenamiento y procesamiento. Por lo que nos quedaría elegir lo siguiente:
+	
+	\item \textbf{Consistencia}: al igual que en el punto anterior, nos interesa tener consistencia en la base de datos relacional, así como en el data warehouse, por lo mismo motivos que en el punto anterior.
+	
+	\item \textbf{Disponibilidad}: por otro lado en la recepción de los datos telemétricos, sería aceptable que hubiera cierta inconsistencia momentánea, como ya hemos comentado.
+\end{itemize}
+
+
+\subsection{Modelo Predictivo}
+Aunque no se ha comentado en los ejercicios anteriores, nuestro sistema incluirá un \textbf{modelo predictivo}, cuya explicación se ha dejado para este punto. 
+
+En nuestro caso, emplearemos un \textbf{modelo de Machine Learning}, ya que no necesitamos un \textbf{LLM} para nuestro propósito. Podemos elegir alguno de los modelos que tenemos en el mercado, como XGBoost o K-Means, por ejemplo. En este caso, se empleará para la \textbf{predicción de retrasos} y \textbf{calculo de rutas}, aunque también lo emplearemos para automatizar un poco las alertas y realizar predicciones sobre ellas. El sistema estaría \textbf{integrado en la capa de análisis}.
+
+Para su \textbf{entrenamiento}, se emplearía un procesamiento por lotes con los datos históricos almacenados en el data warehouse. Es permitiría acelerar el entrenamiento ya que los datos, además de ser consistentes, están preparados para su análisis. 
+
+Una vez entrenado, para su \textbf{funcionamiento diario} se emplearían los datos de telemetría de los vehículos, datos de trafico y meteorológicos, que se usarían para \textbf{predecir} la duración de una ruta, las posibilidades de retraso, detectar anomalías, riesgo de averías de un vehículo, consumo anormal de combustible, ...etc.
+
+
+
+
 
 
 \end{document}  
