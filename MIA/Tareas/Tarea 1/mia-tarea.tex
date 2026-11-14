@@ -52,11 +52,8 @@
 
 \newpage
 
-\section{Introducción}
-En este documento se incluye la \textbf{Actividad de la unidad 1} de la asignatura de Modelos de Inteligencia Artificial. Tal y como recomendaba la profesora en una de las videoconferencias, se ha realizado finalmente en un único documento PDF, separando en cada sección las diferentes partes de las que se compone la actividad.
-
-\section{Parte 1: Perspectivas de IA}
-En esta parte se realizará un debate colaborativo y un informe del diseño individual de una IA.                                
+\section{Perspectivas de IA}
+En esta parte se realizará un debate colaborativo y un informe del diseño individual de una IA en el foro.                               
 
 \subsection{Debate en Foro: Clasificación y Análisis Crítico}
 Se ha realizado una contribución al foro, dentro del hilo \textbf{Pensar Racionalmente} que es el que le ha tocado a mi subgrupo. Además, se ha realizado un comentario sobre la publicación de una compañera que había elegido el sistema experto DXPlain. Aunque se puede ver la contribución al debate en el foro, se incluyen capturas de estas, que vemos a continuación.
@@ -74,52 +71,181 @@ Se ha realizado una contribución al foro, dentro del hilo \textbf{Pensar Racion
 	\caption{Replica al debate}
 \end{figure}
 
-
 \subsection{Informe Técnico}
-En este ejercicio se va diseñar conceptualmente un sistema de inteligencia artificial, respondiendo a la diferentes preguntas que se plantean en la actividad.
+
+En este ejercicio se va a diseñar conceptualmente un sistema de inteligencia artificial para la empresa \textbf{Nova Logic S.L}, para optimizar la gestión de mercancías en los centros logísticos. 
 
 \subsubsection{Problema a Resolver}
-La organización que se ha elegido es un \textbf{clan competitivo del juego Hell Let Loose}, donde la planificación de la estrategia es fundamental para obtener buenos resultados y resulta problemática dada su complejidad.
+La empresa elegida ha sido \textbf{Nova Logic S.L}, una empresa de logística dedicada al transporte de mercancías. La empresa tiene un gran volumen de operaciones, que son complicadas de gestionar, influyendo además gran cantidad de factores que pueden afectar a las entregas de mercancías, resultando especialmente complejo la gestión de mercancías en los centros logísticos y la gestión de rutas.
 
-En ese aspecto, el \textbf{problema que se quiere resolver} es la dificultar para analizar de forma objetiva los resultados de los partidos, así como la distribución de los efectivos en el mapa, identificando posibles puntos débiles y proponiendo estrategias efectivas.
+El principal problema, es la predicción de la fechas de entrega y los retrasos, la detección de anomalías durante las rutas o la planificación de rutas eficientes, debido a todos los factores que influyen en estos.
 
-Para Redacta un documento individual donde diseñes conceptualmente un sistema de Inteligencia Artificial aplicado a una organización. Tu informe debe incluir:
-
-Problema operativo a resolver: Describe la necesidad concreta de negocio o flujo de trabajo que optimizará el sistema.
-Clasificación conceptual: Ubica tu propuesta dentro de una de las 4 perspectivas clásicas justificando tu elección.
-Interacción Hombre-Máquina: Detalla cómo interactuará el sistema con los usuarios o empleados (interfaz, grado de autonomía y supervisión).
-
-Para \textbf{solucionarlo}, se propone la creación de un sistema de inteligencia artificial que sea capaz de analizar no solo los logs de las partidas, sino capturas de pantalla de los mapas en determinados momentos del juego y proponer estrategias efectivas para mejorar el desempeño en los partidos.
+Para solucionarlo, se ha decidido implementar un \textbf{sistema de inteligencia artificial} encargado de analizar los datos históricos, así como los datos en tiempo real, procedentes de los sensores de lo vehículos, el GPS, la información meteorológica o el estado del tráfico. Con estos datos, el sistema deberá \textbf{predecir retrasos}, \textbf{seleccionar las mejores rutas} o \textbf{predecir incidencias}, mejorando la planificación de las entregas, empleando para ello diferentes modelos de inteligencia artificial. 
 
 \subsubsection{Clasificación Conceptual}
-En nuestro caso, la propuesta se enmarcaría dentro de los sistemas que \textbf{actúan como humanos}.
+Nuestra propuesta se enmarca dentro de los sistemas que \textbf{actúan racionalmente}, ya que se encarga de tomar las decisiones más adecuadas para la entrega de mercancías, teniendo en cuenta los datos que posee de la situación, tanto de la flota como del tiempo y el tráfico, basándose además en los datos históricos que se tiene de otras entregas.
 
-Nuestro sistema deberá seleccionar las acciones más adecuadas  dada un conjunto de entradas. El sistemas necesita usar \textbf{visión por computador}, para procesar los mapas don al distribución del equipos, así mismo debe saber \textbf{comprender el lenguaje humano}, ya que deberá analizar los logs de la partida que vienen en formato CSV con los valores escritos en inglés o español. Con estos datos, debería \textbf{proponer acciones estratégicas} que mejoraran el desempeño del equipo en futuras partidas.
-
-Por lo tanto, aunque no controlaría a los jugadores y los jugadores tendrían la última palabra, el sistema sistema se encargaría de \textbf{tomar decisiones} y \textbf{realizar propuestas} para la consecución de los objetivos del equipo.
+Para llevar a cabo este comportamiento, se \textbf{emplearán diferentes modelos} de inteligencia artificial, como \textbf{modelos predictivos} que se encargarán, con los datos que se les proporcionan desde las diferentes fuentes, de tomar las decisiones más óptimas, incluyendo la rutas más rápidas, acciones a tomar ante imprevistos, ..etc.
 
 
-\subsection{Interacción Hombre-Máquina}
-Los \textbf{usuarios} principales del sistemas serían los jugadores del clan del mencionado juego. La comunicación se realizaría principalmente mediante una \textbf{interfaz web}, donde los usuarios podrían añadir tanto los mapas como los logs para ser procesadores, además de realizar preguntas sobre las estrategias y otros conceptos del juego. Los pasos para interactuar sería los siguientes:
+\subsubsection{Interacción Hombre-Máquina}
+
+Los \textbf{usuarios} principales del sistema serían los trabajadores de la empresa, pero también los clientes, que podrían comprobar el estado de sus pedidos, o modificar los datos de entrega sobre la marcha, encargándose el sistema de recalcular rutas teniendo en cuenta la situación de la flota. Por ello, y dado la diversidad de usuarios, se optará por una \textbf{aplicación web}, donde pueda conectarse todos los usuarios.
+
+Los pasos para que el sistema cumpla su labor y se pueda interactuar con el son los siguientes:
 
 \begin{enumerate}
-	\item \textbf{Entrada de Datos}: los usuarios introducen las imágenes y los logs mediante la interfaz web del modelo para su procesamiento.
-	\item \textbf{Procesamiento}: el sistema procesa los datos insertados analizando su contenido.
-	\item \textbf{Resultados}: el sistemas presenta los resultados del análisis ofreciendo recomendaciones para la estrategia en la siguiente partida.
-	\item \textbf{Consulta Interactiva de Resultados}: el usuario realiza, si lo considera oportuno, preguntas sobre los resultados o alternativas a determinadas propuestas.
+	\item \textbf{Entrada de Datos}: el sistema, previamente entrenado con datos históricos, recopilaría datos de los diferentes sensores de la flota, así como de aplicaciones externas para los informes meteorológicos y el estado del tráfico.
+	
+	\item \textbf{Procesamiento}: los datos se procesan y analizan mediante modelos de inteligencia artificial para predecir retrasos, detectar anomalías y evaluar las condiciones de las rutas.
+	
+	\item \textbf{Resultados}: los resultados se presentarían en la aplicación web, mostrando determinada información dependiendo del nivel de privilegios que tenga un usuario. No es lo mismo que se conecte un cliente, que un conductor o un encargado.
+	
+	\item \textbf{Consulta Interactiva}: los diferentes usuarios podrán conectarse a la aplicación web desde sus respectivas cuentas e introducir datos o consultarlos.
 \end{enumerate}
 
-Respecto al \textbf{grado de autonomía}, sería un sistema con \textbf{autonomía limitada}, ya que no es capaz de realiza acciones directamente sobre el juego o los jugadores, limitándose a la elaboración de recomendaciones, es decir, es un \textbf{sistema de apoyo a las decisiones}.
+Respecto al \textbf{grado de autonomía}, sería un sistema con \textbf{autonomía limitada}, aunque se encargaría de realizar bastante labores de planificación al final son los conductores y empleados quienes tiene la última palabra a la hora de valorar las acciones a tomar.
 
-Por último, la \textbf{supervisión humana} sería \textbf{muy necesaria}, no solo porque son los jugadores los que tienen la última palabra sobre las estrategia, sino porque además deberán valorar la idoneidad de las propuestas y realizar correcciones si fuera necesario en conceptos erróneos.
+Por último, la \textbf{supervisión humana} seguiría siendo necesaria. El personal de operaciones y planificación sería el encargado de valorar las recomendaciones, decidir cómo actuar ante las incidencias y aprobar los cambios que afecten a la actividad de la empresa. De esta forma, la inteligencia artificial funcionaría como un \textbf{sistema de apoyo a la toma de decisiones}.
 
-\section{Parte 2: Campos de Aplicación de la Inteligencia Artificial}
+\section{Campos de Aplicación de la Inteligencia Artificial}
 En esta segunda parte se ha elegido un sector profesional sobre el que se van a responder un serie de preguntas. El sector elegido ha sido el \textbf{sector de la Logística}.
 
 \subsection{Análisis de Casos Reales de Eficiencia Operativa}
+En este apartado vamos a estudiar dos casos de reales de implantación de Inteligencia Artificial en el sector de la logística.
+
+\subsubsection{Amazon}
+Amazon \textbf{gestiona millones de productos y pedidos}, necesitando organizar grandes cantidades de mercancías en sus centros de logística. Los diferentes trabajos almacenamiento, identificación, clasificación requieren muchos desplazamientos de los trabajadores, así como bastante tiempo.
+
+En este aspecto, \textbf{Amazon ha desarrollado} diferentes \textbf{sistemas de robótica inteligente} para automatizar todos estos procesos, entre los que destaca \textbf{Sequoia}, un sistema que integrá múltiples sistemas robóticos para la gestión del inventario, combinados con inteligencia artificial y visión artificial. De hecho Amazon ha creado una filial para el desarrollo exclusivo de robots llamada Amazon Robotics \cite{amz01}. 
+
+Estos \textbf{robots trasladan los contenedores de mercancías} hasta estaciones de trabajo donde los empleados pueden preparar los pedidos sin necesidad de estar desplazándose de una lado para otro, gracias a la IA y los sistemas de visión artificial que les permiten identificar y organizar el inventario.
+
+Según los \textbf{datos publicados por Amazon}, las principales mejoras operativas son: 
+
+\begin{itemize}
+	\item Sequoia permite identificar y almacenar inventario un 75\% más rápido.
+	\item En centros algunos centros logísticos se ha conseguido reducir hasta un 25\% el tiempo de procesao de pedidos.
+	\item Además, la automatización ha mejorado la ergonomía de los puestos de trabajo. 
+\end{itemize}
+
+En resumen, este sistema permite mejorar el procesado de pedidos, haciendo más rápido y más cómodo para los empleados que no deben de desplazarse continuamente.
+
+\subsubsection{DHL}
+Cuando \textbf{llegan mercancías a un centro de distribución} de DHL, hay que \textbf{inspeccionar la mercancías}, para saber si requieren de algún tipo de manipulación especial. Tradicionalmente esta comprobación la realizaban los trabajadores, lo que puede llevar a errores, además de consumir tiempo.
+
+\textbf{DHL Supply Support} incorporó un sistema de inteligencia de inteligencia artificial y visión por computador para analizar los palés que llegan identificando determinadas características para determinar si el producto requiere de manipulación especial.
+
+Según la publicación \textbf{Supply Chain Management Review}, esta aplicación permitió:
+
+\begin{itemize}
+	\item Incrementar la productividad un 14\%
+	\item Mejorar la precisión en la detección de características importantes de los pales.
+	\item Reducir los falsos positivos y agilizar el procesamiento de mercancías.
+	\item Mejorar la trazabilidad.
+\end{itemize}
+
+Al igual que en el caso de Amazon, este ejemplo pone de relieve como la implementación de sistemas de IA en el sector de la logística ayuda a la optimización de procesos y a la mejora de la productividad.
+
+\subsection{Nuevas Forma de Interacción: Multimodalidad y Copilotos}
+La \textbf{multimodalidad y los copilotos} están cambiando como los trabajadores del sector logístico se relacionan con las tecnologías en su puesto de trabajo.
+
+\subsubsection{Interacción Multimodal en Tiempo Real}
+La interfaces multimodales permiten interactuar con la IA y otros sistemas mediante la voz, texto o imágenes, o un combinado de ellos. 
+
+En logística se puede aplicar de diferentes formar:
+\begin{itemize}
+	\item \textbf{Voz}: recibir instrucciones y confirmar tareas sin utilizar las manos.
+	\item \textbf{Texto}: consultar de pedidos, existencias, o introducir instrucciones a un agente mediante texto.
+	\item \textbf{Visión}: identificar productos, leer etiquetas o detectar daños, mediante la cámara de un dispositivo.
+\end{itemize}
+
+Un ejemplo del empleo del empleo de estas interfaces lo tenemos en \href{https://www.zebra.com/us/en/resource-library/use-case-library/multimodal-directed-picking-for-warehouses.html?utm_source=chatgpt.com}{Zebra Technologies}, cuyos sistemas permiten a los operarios recibir instrucciones por voz o confirmar tareas durante la preparación de pedidos, reduciendo la necesidad de interactuar con pantallas constantemente.
+
+\subsubsection{Hiperpersonalización Mediante Copilotos Inteligentes}
+Los \textbf{copilotos inteligentes} son agentes de inteligencia artificial integrados en aplicaciones o flujos de trabajo, entendiendo el contexto de la situación y personalizando la experiencia del usuario, o en este caso del trabajador. En el sector de la logística, suelen integrarse en los diferentes sistemas, como en el de gestión de almacenamiento, transporte o gestión empresarial.
+
+Un ejemplo de esto es \href{https://learn.microsoft.com/en-us/dynamics365/supply-chain/faq-wma-copilot?utm_source=chatgpt.com}{Microsoft Dynamics 365 Supply Chain Management}, que incorpora Copilot para generar resúmenes de sobre la carga de trabajo, las tareas pendientes y los recursos disponibles, facilitando la organización del almacén.
+
+Alguno de los \textbf{beneficios} que aportan el uso de esta tecnología al sector de la logística incluyen:
+
+\begin{itemize}
+	\item Aumentar la productividad y reducir interrupciones.
+	\item Disminuir errores durante la gestión de pedidos.
+	\item Facilitar el acceso de información importante de forma automática.
+	\item Adaptar la asistencia a cada puesto de trabajo.
+\end{itemize}
+
+En resumen, el uso de copilotos permite ofrecer asistencia personalizada de los trabajadores en su puesto, personalizando la experiencia de trabajo y incrementando la productividad.
+
+\subsection{Impacto Social, Beneficios y Dilemas Éticos}
+La incorporación de la IA en el sector de la logística conlleva \textbf{grandes beneficios} para el sector, las empresas y los trabajadores, pero también un conjunto de \textbf{riesgos y consideraciones éticas} que hay que tener en cuenta.
+
+\subsubsection{Beneficios}
+Los beneficios, algunos de los cuales hemos comentado en puntos anterior, son entre otros:
+
+\begin{itemize}
+	\item \textbf{Mejora de la condiciones laborales}: la automatización de tares repetitivas o físicamente exigentes pueden mejorar el trabajo de los empleados y reducir los accidentes.
+	\item \textbf{Aumento de la Eficiente}: con sistema como asistente de IA la eficiencia de los trabajadores puede aumentar, pudiendo un trabajador realizar el trabajo más rápido y mejor.
+	\item \textbf{Mayor Sostenibilidad}: la IA puede ayudar a optimizar recursos, así como rutas, incrementando el ahorro de combustible y emisiones.
+	\item \textbf{Demanda de Nuevos Perfiles Laborales}: aumenta la demanda de nuevos perfiles laborales como expertos en IA o Big Data, robótica, ...etc.
+\end{itemize}
+
+Estos son solo algunos de los beneficios que puede aportar la IA en el sector logístico, pero como veremos, también hay que tener en cuenta ciertas consideraciones éticas.
+
+\subsubsection{Dilemas Éticos y Riesgos}
+Al margen de los beneficios, el uso de IA también genera ciertos riesgos y consideraciones éticas que debemos tener en cuenta, entre otros:
+
+\begin{itemize}
+	\item \textbf{Desplazamiento Laboral}: la inclusión de sistemas de IA puede reducir la necesidad de ciertos puestos, especialmente aquellos basados en tareas repetitivas.
+	\item \textbf{Privacidad}: los sistemas de IA pueden recabar datos, como imágenes o audios, en el puesto de trabajo que pueden poner en riesgo la privacidad de los trabajadores en su lugar de trabajo.
+	\item \textbf{Dependencia de la Tecnología}: se puede crear una dependencia excesiva de estás tecnologías, reduciendo la capacidad de intervención y criterio de los trabajadores.
+	\item \textbf{Sesgos y Falta de Transparencia}: los algoritmos pueden cometer errores, o tomar decisiones injustas si utilizan datos incompletos o sesgados.
+\end{itemize}
+
+\subsection{Propuesta Futura Innovadora y Retorno de Inversión}
+Por último en esta parte de la tarea, vamos a realizar una propuesta innovadora para el sector logístico, estimando el ROI y el valor añadido esperado.
+
+\subsubsection{Propuesta Innovadora}
+Como propuesta de futuro, se va a plantear la creación de un \textbf{gemelo digital} de un centro logístico, es decir, una representación virtual de sus instalaciones que reproduzca su funcionamiento en tiempo real mediante datos procedentes de sensores, cámaras, robots y sistemas de gestión.
+
+Para \textbf{implementar} esta propuesta se instalarían sensores y cámaras en diferentes zonas para recoger información en tiempo real sobre el movimiento de mercancías, la ocupación de los estantes, movimiento de los trabajadores o la entrada y salida de mercancías.
+
+Con estos datos, se podría crear un \textbf{gemelo digital} del centro logístico, que se actualizaría continuamente con el movimiento de personal, maquinaría y mercancías en tiempo real. Se usarían \textbf{modelos de visión artificial} para interpretar la imágenes den cámaras e ir actualizando la información, así como analizándola.
+
+Sobre este gemelo, actuarían diferente \textbf{modelos de inteligencia artificial}, como \textbf{modelos predictivos} para anticipar necesidades de recursos o posibles congestiones de pedidos. Así mismo se usarían \textbf{modelos encargados de la optimización}, empleando algoritmos para calcular la distribución de tareas, movimientos o para optimizar los recursos de forma más eficiente.
+
+Además, el gemelo digital se podría emplear para la \textbf{simulación de situaciones complejas}, adelantándose a dichas situaciones y probando la forma más eficiente de solucionarlas.
 
 
+Por último, deberá haber una \textbf{interfaz de visualización}, donde se pueda gestionar lo que esta sucediendo en el almacén, detectando problemas o consultando estadísticas en tiempo real.
 
+\subsubsection{Retorno de Inversión (ROI)}
+Se ha realizado un \textbf{calculo del retorno de inversión}, aunque como es de esperar, este calculo es \textbf{orientativo}, ya que en gran medida la \textbf{inversión inicial} va a depender del \textbf{tamaño del centro logístico}, ya que la mayor parte de esta inversión se va a centrar en cámaras y sistemas pare recopilar datos, así como los servidores para ejecutar los modelos y gestionar los diferentes sistemas.
+
+
+\begin{table}[ht]
+	\centering
+	\renewcommand{\arraystretch}{1.4} 
+	\setlength{\tabcolsep}{10pt}     
+	\begin{tabular}{|l|r|}
+		\hline
+		\textbf{Concepto} & \textbf{Estimación aproximada} \\ \hline
+		Inversión inicial & 50.000 € \\ \hline
+		Mantenimiento anual & 8.000 € \\ \hline
+		Coste total durante 3 años & 74.000 € \\ \hline
+		Ahorro anual en operaciones & 20.000 € \\ \hline
+		Ahorro anual por reducción de errores & 7.500 € \\ \hline
+		Ahorro bruto acumulado en 3 años & 82.500 € \\ \hline
+		Beneficio neto estimado & 8.500 € \\ \hline
+		\textbf{ROI estimado a 3 años} & \textbf{11,5 \%} \\ \hline
+	\end{tabular}
+	\caption{Estimación del retorno de la inversión del gemelo digital}
+\end{table}
+
+Como se ha comentado, esto es estimado. Se ha realizado el ROI a los 3 años porque la inversión inicial es grande, y se tardará un poco en recuperar.
+
+\section{Exploración de Técnicas de la Inteligencia Artificial}
 
 \newpage
 
